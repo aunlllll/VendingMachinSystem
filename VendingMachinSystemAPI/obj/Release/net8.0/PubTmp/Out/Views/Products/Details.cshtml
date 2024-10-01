@@ -1,0 +1,61 @@
+﻿@model VendingMachinSystem.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<h1 class="text-center text-primary">@ViewData["Title"]</h1>
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Product Information</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.ProductName)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Price)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Price)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Quantity)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.CreatedDate)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.CreatedDate)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.UpdatedDate)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.UpdatedDate)
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-3 text-center">
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">Edit</a>
+    }
+    <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+</div>

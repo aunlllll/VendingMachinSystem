@@ -1,0 +1,105 @@
+﻿@model VendingMachinSystem.ViewModels.PurchaseListViewModel
+
+@{
+    ViewData["Title"] = "Purchase List";
+}
+
+<h1 class="text-center">Purchase  List</h1>
+
+<div class="container mt-4">
+    <div class="mb-3">
+        <strong>Total Purchase: @Model.TotalCount</strong>
+    </div>
+
+    <form method="get" asp-action="purchaseList">
+        <div class="input-group mb-3">
+            <input type="text" name="searchTerm" class="form-control" placeholder="Search products..." value="@Model.SearchTerm" />
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    <a asp-action="PurchaseList" asp-route-sortColumn="ProductName"
+                       asp-route-isSortDescending="@(Model.SortColumn == "ProductName" && Model.IsSortDescending == false)"
+                       asp-route-searchTerm="@Model.SearchTerm">
+                        Product Name
+                        @if (Model.SortColumn == "ProductName")
+                        {
+                            <span>@(Model.IsSortDescending ? "▲" : "▼")</span>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a asp-action="PurchaseList" asp-route-sortColumn="Price" asp-route-isSortDescending="@(Model.SortColumn == "Price" && Model.IsSortDescending == false)" asp-route-searchTerm="@Model.SearchTerm">
+                        Price
+                        @if (Model.SortColumn == "Price")
+                        {
+                            <span>@(Model.IsSortDescending ? "▲" : "▼")</span>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a asp-action="PurchaseList" asp-route-sortColumn="Quantity" asp-route-isSortDescending="@(Model.SortColumn == "Quantity" && Model.IsSortDescending == false)" asp-route-searchTerm="@Model.SearchTerm">
+                        Quantity
+                        @if (Model.SortColumn == "Quantity")
+                        {
+                            <span>@(Model.IsSortDescending ? "▲" : "▼")</span>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a asp-action="PurchaseList" asp-route-sortColumn="TotalPrice" asp-route-isSortDescending="@(Model.SortColumn == "TotalPrice" && Model.IsSortDescending == false)" asp-route-searchTerm="@Model.SearchTerm">
+                        TotalPrice
+                        @if (Model.SortColumn == "TotalPrice")
+                        {
+                            <span>@(Model.IsSortDescending ? "▲" : "▼")</span>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a asp-action="PurchaseList" asp-route-sortColumn="PurchaseDate" asp-route-isSortDescending="@(Model.SortColumn == "PurchaseDate" && Model.IsSortDescending == false)" asp-route-searchTerm="@Model.SearchTerm">
+                        Purchase Date
+                        @if (Model.SortColumn == "PurchaseDate")
+                        {
+                            <span>@(Model.IsSortDescending ? "▲" : "▼")</span>
+                        }
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Transactions)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Product.ProductName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Product.Price)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                        <td>@item.TotalPrice.ToString("F2")</td>
+                    <td>@Html.DisplayFor(modelItem => item.PurchaseDate)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <strong>Page @Model.CurrentPage of @Math.Ceiling((double)Model.TotalCount / Model.PageSize)</strong>
+        </div>
+        <nav>
+            <ul class="pagination">
+                @for (var i = 1; i <= Math.Ceiling((double)Model.TotalCount / Model.PageSize); i++)
+                {
+                    <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                        <a class="page-link" asp-action="purchaseList" asp-route-currentPage="@i" asp-route-searchTerm="@Model.SearchTerm" asp-route-sortColumn="@Model.SortColumn" asp-route-isSortDescending="@Model.IsSortDescending">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
